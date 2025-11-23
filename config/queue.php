@@ -109,4 +109,8 @@ return [
         'table' => 'failed_jobs',
     ],
 
+    'admins' => [
+       'superadmin@gmail.com', // replace with your admin email(s)
+     ],
+
 ];

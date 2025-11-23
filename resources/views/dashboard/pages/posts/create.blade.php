@@ -38,6 +38,7 @@
 
         
         <div class="row">
+              
                 <div class="col-md-12">
                         @if(session('error')) 
                             <div class="alert alert-danger bg-danger-100 text-danger-600 border-danger-100 px-24 py-11 mb-0 fw-semibold text-lg radius-8 d-flex align-items-center justify-content-between" role="alert">
@@ -66,9 +67,6 @@
                     <div class="card-body p-24">
                           <div class=" align-items-center">
                                       <div class="row">
-
-                                          
-                                          
                                                 <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
                                                     @csrf
                                                     <div class="row">
@@ -90,6 +88,45 @@
                                                                       @enderror
                                                                   </div>
                                                            </div>
+
+                                                          <div class="row">
+                                                             <div class="col-md-6">
+                                                                 <div class="mb-3">
+                                                                      <label for="title">Add Youtube Link:</label>
+                                                                      <input type="text" name="youtube_link" class="form-control" placeholder="https://youtu.be/...">
+                                                                      @error('youtube_link')
+                                                                      <p class="text-red-500 text-sm" style="color:#d22f2f">{{ $message }}</p>
+                                                                      @enderror
+                                                                  </div>
+                                                             </div>
+                                                             <div class="col-md-6">
+                                                                   <div class="mb-3">
+                                                                      <label for="title">Tags (separate with commas):</label>
+                                                                      <input type="text" name="tags" placeholder="e.g. Lyrics, Song, flave" class="form-control">
+                                                                      @error('tags')
+                                                                      <p class="text-red-500 text-sm" style="color:#d22f2f">{{ $message }}</p>
+                                                                      @enderror
+                                                                  </div>
+                                                             </div>
+                                                          </div>
+
+                                                          <div class="row">
+                                                              <div class="col-md-6">
+                                                                   <div class="mb-3">
+                                                                      <label for="title">Categories:</label>
+                                                                     
+                                                                      <select name="category_id" class="form-control js-example-basic-single" style="width: 100% !important">
+                                                                          <option value="">-- Select Category --</option>
+                                                                          @foreach($categories as $category)
+                                                                              <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                                          @endforeach
+                                                                       </select>
+                                                                      @error('category_id')
+                                                                      <p class="text-red-500 text-sm" style="color:#d22f2f">{{ $message }}</p>
+                                                                      @enderror
+                                                                  </div>
+                                                             </div>
+                                                          </div>
 
                                                           <div class="col-md-12">
                                                               <div class="mb-3">
@@ -129,6 +166,7 @@
 @endsection
 
 @section('script')
+
 <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
 
 <script>
@@ -144,7 +182,51 @@
         };
       });
 </script>
+
+<script>
+document.getElementById('thumbnail').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    const status = document.getElementById('thumbnailStatus');
+
+    if (!file) return;
+
+    status.textContent = 'Uploading...';
+
+    // Simulate upload process (replace this with actual AJAX upload if needed)
+    const formData = new FormData();
+    formData.append('thumbnail', file);
+
+    fetch('{{ route("posts.store") }}', {  // This should point to a route that handles only thumbnail if async
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            status.textContent = 'Uploaded';
+        } else {
+            status.textContent = 'Upload failed';
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        status.textContent = 'Upload failed';
+    });
+});
+</script>
+
+<script>
+        // In your Javascript (external .js resource or <script> tag)
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2();
+        });
+</script>
 @endsection
+
+
+
 
 
 

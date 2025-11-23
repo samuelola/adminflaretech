@@ -46,7 +46,11 @@
 
         
         <div class="row">
-                <div class="col-md-12">
+                <div class="col-xxl-6 col-xl-8 col-lg-10 mb-2">
+                   
+                    <a href="{{route('posts.create')}}" type="button" class="btn btn-primary">Create Post</a>
+               </div>
+                <div class="col-md-12 mt-3">
                         @if(session('error')) 
                             <div class="alert alert-danger bg-danger-100 text-danger-600 border-danger-100 px-24 py-11 mb-0 fw-semibold text-lg radius-8 d-flex align-items-center justify-content-between" role="alert">
                                     <div class="d-flex align-items-center gap-2">
@@ -71,14 +75,21 @@
 
             <div class="col-lg-12">
                 <div class="card h-100">
+                    
                     <div class="card-body p-24">
+                          
+                          @if($allposts->count() > 0)
+                              {{$allposts->count()}} Posts
+                          @else
+                              0
+                          @endif
                           <div class=" align-items-center">
                                 <div class="row">
                                       <div class="table-responsive">
                                     <table class="table colored-row-table mb-0">
                                         <thead>
                                         <tr>
-                                            <th scope="col" class="bg-base">Sn</th>
+                                            
                                             <th scope="col" class="bg-base">Thumbnail</th>    
                                             <th scope="col" class="bg-base">Title</th>    
                                             <th scope="col" class="bg-base">Content</th>
@@ -88,48 +99,19 @@
                                         </thead>
                                         <tbody>
 
-                                        @php
-                                            // Define an array of background color classes
-                                            $rowColors = ['bg-primary-light', 'bg-success-focus', 'bg-info-focus', 'bg-warning-focus', 'bg-danger-focus'];
-                                        @endphp
-
-                                        @foreach($posts as $key=>$post)
-                                             @php
-                                                // Pick a color based on row index, loop back using modulo
-                                                $colorClass = $rowColors[$key % count($rowColors)];
-                                             @endphp
-                                             <tr>
-                                                    <td class="{{ $colorClass }}">{{$key+1}}</td>
-                                                    <td class="{{ $colorClass }}">
-                                                    <div class="d-flex align-items-center">
-                                                        <img src="uploads/{{$post->thumbnail}}" alt="" class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
-                                                        
-                                                    </div>
-                                                    </td>    
-                                                    <td class="{{ $colorClass }}">{{$post->title}}</td>
-                                                    
-                                                    <td class="{{ $colorClass }}">{{ shortenBlogContent($post->content, 3) }}</td>
-                                                    <td class="{{ $colorClass }}"> {{date("M d, Y", strtotime($post->created_at))}}</td>
-                                                    <td class="{{ $colorClass }}">
-                                                        <div class="d-flex align-items-center gap-1">
-                                                            <a class="btn btn-info" href="{{route('posts.edit',$post->id)}}"><iconify-icon icon="tabler:edit" width="16" height="16"></iconify-icon></a>
-                                                            
-                                                            <form action="{{ route('posts.destroy', $post->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this post?');">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" class="btn btn-sm btn-danger">
-                                                                    <iconify-icon icon="ant-design:delete-outlined" width="16" height="16"></iconify-icon>
-                                                                </button>
-                                                            </form>
-                                                        </div>
-                                                    </td>    
-                                                    
-                                              </tr>
-                                        @endforeach
+                                         @include('dashboard.pages.posts.table_rows')
                                         
                                         
                                         </tbody>
                                     </table>
+                                    <div class="text-center mt-3">
+                                        @if ($posts->hasMorePages())
+                                            <button id="loadMoreBtn" data-next-page="{{ $posts->nextPageUrl() }}" class="btn btn-primary-600">
+                                                Load More
+                                            </button>
+                                        @endif
+                                    </div>
+
                                     </div>   
                                 </div>
                           </div>
@@ -145,6 +127,30 @@
   </div>
 
 @endsection
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).on('click', '#loadMoreBtn', function () {
+    var button = $(this);
+    var nextPage = button.data('next-page');
+
+    if (!nextPage) return;
+
+    $.get(nextPage, function (response) {
+        $('tbody').append(response.rows);
+
+        if (response.next_page) {
+            button.data('next-page', response.next_page);
+        } else {
+            button.remove(); // hide button if no more data
+        }
+    });
+});
+
+</script>
+
 
 @section('script')
 <script>

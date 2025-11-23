@@ -69,14 +69,14 @@
 
                                           
                                           
-                                                <form action="{{ route('posts.update', $post->id) }}" method="POST" enctype="multipart/form-data">
+                                                <form action="{{ route('posts.update', $post) }}" method="POST" enctype="multipart/form-data">
                                                     @csrf
                                                     @method('PUT')
                                                     <div class="row">
                                                             <div class="col-md-6">
                                                                   <div class="mb-3">
                                                                       <label for="title">Title:</label>
-                                                                      <input type="text" name="title" class="form-control" value="{{$post->title}}">
+                                                                      <input type="text" name="title" class="form-control" value="{{$post->title ?? ''}}">
                                                                       @error('title')
                                                                       <p class="text-red-500 text-sm" style="color:#d22f2f">{{ $message }}</p>
                                                                       @enderror
@@ -89,7 +89,7 @@
                                                                       <input type="file" name="thumbnail" class="form-control mb-1">
                                                                        @if($post->thumbnail)
                                                                             <div class="mb-2">
-                                                                                <img src="{{ asset('uploads/' . $post->thumbnail) }}" alt="Current Thumbnail" width="150" class="rounded border">
+                                                                                <img src="{{config('services.external_url.website_storage_link') . '/storage/' . $post->thumbnail}}" alt="Current Thumbnail" width="100" height="50" class="rounded border">
                                                                             </div>
                                                                       @endif
                                                                       @error('thumbnail')
@@ -97,6 +97,45 @@
                                                                       @enderror
                                                                   </div>
                                                            </div>
+
+                                                          <div class="row">
+                                                             <div class="col-md-6">
+                                                                 <div class="mb-3">
+                                                                      <label for="title">Add Youtube Link:</label>
+                                                                      <input type="text" name="youtube_link" class="form-control" value="{{$post->youtube_link ?? ''}}">
+                                                                      @error('youtube_link')
+                                                                      <p class="text-red-500 text-sm" style="color:#d22f2f">{{ $message }}</p>
+                                                                      @enderror
+                                                                  </div>
+                                                             </div>
+                                                             <div class="col-md-6">
+                                                                   <div class="mb-3">
+                                                                      <label for="title">Tags (separate with commas):</label>
+                                                                      <input type="text" name="tags" placeholder="e.g. Lyrics, Song, flave" class="form-control" 
+                                                                       value="{{ $post->tags->pluck('name')->implode(', ') ?? '' }}">
+                                                                      @error('tags')
+                                                                      <p class="text-red-500 text-sm" style="color:#d22f2f">{{ $message }}</p>
+                                                                      @enderror
+                                                                  </div>
+                                                             </div>
+                                                          </div>
+
+                                                          <div class="row">
+                                                              <div class="col-md-6">
+                                                                   <div class="mb-3">
+                                                                      <label for="title">Categories:</label>
+                                                                     
+                                                                      <select name="category_id" class="form-control js-example-basic-single" style="width: 100% !important">
+                                                                          @foreach($categories as $category)
+                                                                              <option value="{{ $category->id }}" {{$category->id == optional($post->category)->id ? 'selected' : ''}}>{{ $category->name }}</option>
+                                                                          @endforeach
+                                                                       </select>
+                                                                      @error('category_id')
+                                                                      <p class="text-red-500 text-sm" style="color:#d22f2f">{{ $message }}</p>
+                                                                      @enderror
+                                                                  </div>
+                                                             </div>
+                                                          </div>
 
                                                           <div class="col-md-12">
                                                               <div class="mb-3">

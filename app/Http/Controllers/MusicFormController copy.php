@@ -16,8 +16,6 @@ use Intervention\Image\Laravel\Facades\Image;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
-use App\Mail\ReleaseApprovedMail;
-use Illuminate\Support\Facades\Mail;
 
 
 class MusicFormController extends Controller
@@ -1174,32 +1172,21 @@ public function deleteAudioTrack(Request $request)
 
         $item = MusicRelease::findOrFail($request->id);
         $item->distributed = 'yes';
-        $item->distributed_at = NOW();
         $item->save();
 
         // Generate metadata file
         $metadataPath = $this->generateMetadataForDSP($item);
         $xmlPath = $this->generateDDEXMetadata($item);
         $csvPath = $this->generateMetadataCSV($item);
-
-        // Build full public URLs
-        $baseUrl = rtrim(config('services.external_url.website2'), '/');
-        $jsonUrl = $baseUrl . $metadataPath;
-        $xmlUrl = $baseUrl . $xmlPath;
-        $csvUrl = $baseUrl . $csvPath;
-
-        // Send email (queued)
-        $distributorEmail = config('mail.from.address');
-        Mail::to($distributorEmail)->queue(new ReleaseApprovedMail($item, $jsonUrl, $xmlUrl, $csvUrl));
         
 
         return response()->json([
-        'success' => true,
-        'message' => 'Item approved, metadata generated, and email queued to distributor.',
-        'metadata_file' => $jsonUrl,
-        'xml_metadata' => $xmlUrl,
-        'csv_metadata' => $csvUrl
-       ]);
+            'success' => true, 
+            'message' => 'Item approved and metadata generated!',
+            'metadata_file' => $metadataPath,
+            'xml_metadata' => $xmlPath,
+            'csv_metadata' => $csvPath
+        ]);
     }
 
    private function generateMetadataForDSP(MusicRelease $release)

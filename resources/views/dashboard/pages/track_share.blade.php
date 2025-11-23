@@ -91,7 +91,7 @@
         </div>
 
         <h3 class="fw-bold mb-1">{{ $track->title }}</h3>
-        <p class="artist-name mb-4">By {{ $track->release?->plan ?? 'Unknown Artist' }}</p>
+        <p class="artist-name mb-4">By {{ $track->artist ?? 'Unknown Artist' }}</p>
 
         <audio controls>
             <source src="{{ config('services.external_url.website2') }}/storage/{{ $track->audioFile->path }}" type="audio/mpeg">

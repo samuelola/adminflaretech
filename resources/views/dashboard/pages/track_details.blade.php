@@ -53,7 +53,7 @@
                               <div id="single-song-player" style="box-shadow: none !important;">
                                     <!--music detail -->
                                           <div class="music-detail">
-                                              <h3 style="font-size: 40px !important;">{{$track_user_detail->title}}</h3>
+                                              <h3 style="font-size: 40px !important;" class="fw-bold">{{$track_user_detail->title}}</h3>
                                               
                                               <div class="d-flex align-items-center mb-4">
                                               <h6 style="font-size: 20px !important;" class="mb-1 fw-bold me-3"><span>ISRC</span>&nbsp; : {{$track_user_detail->isrc}}</h6>
@@ -115,10 +115,10 @@
                                 <svg style="color:#700084;" class="icon-20" width="18" viewBox="0 0 24 24">
                                     <path fill="currentColor" d="M18 16.08C17.24 16.08 16.56 16.38 16.04 16.85L8.91 12.7C8.96 12.47 9 12.24 9 12S8.96 11.53 8.91 11.3L15.96 7.19C16.5 7.69 17.21 8 18 8C19.66 8 21 6.66 21 5S19.66 2 18 2 15 3.34 15 5C15 5.24 15.04 5.47 15.09 5.7L8.04 9.81C7.5 9.31 6.79 9 6 9C4.34 9 3 10.34 3 12S4.34 15 6 15C6.79 15 7.5 14.69 8.04 14.19L15.16 18.34C15.11 18.55 15.08 18.77 15.08 19C15.08 20.61 16.39 21.91 18 21.91S20.92 20.61 20.92 19C20.92 17.39 19.61 16.08 18 16.08M18 4C18.55 4 19 4.45 19 5S18.55 6 18 6 17 5.55 17 5 17.45 4 18 4M6 13C5.45 13 5 12.55 5 12S5.45 11 6 11 7 11.45 7 12 6.55 13 6 13M18 20C17.45 20 17 19.55 17 19S17.45 18 18 18 19 18.45 19 19 18.55 20 18 20Z"></path>
                                 </svg></a></div>
-                            <div class="iq-circle me-2"><a href="javascript:void();">
+                            {{--<div class="iq-circle me-2"><a href="javascript:void();">
                             <svg style="color:#700084;" class="icon-20" width="20" viewBox="0 0 24 24">
                                 <path fill="currentColor" d="M12.1,18.55L12,18.65L11.89,18.55C7.14,14.24 4,11.39 4,8.5C4,6.5 5.5,5 7.5,5C9.04,5 10.54,6 11.07,7.36H12.93C13.46,6 14.96,5 16.5,5C18.5,5 20,6.5 20,8.5C20,11.39 16.86,14.24 12.1,18.55M16.5,3C14.76,3 13.09,3.81 12,5.08C10.91,3.81 9.24,3 7.5,3C4.42,3 2,5.41 2,8.5C2,12.27 5.4,15.36 10.55,20.03L12,21.35L13.45,20.03C18.6,15.36 22,12.27 22,8.5C22,5.41 19.58,3 16.5,3Z"></path>
-                            </svg></a></div>                 
+                            </svg></a></div>--}}                 
                             <div class="iq-circle">
                                 <a href="{{route('download_track',$track_user_detail->id)}}">
                                 <svg style="color:#700084;" class="icon-20" width="20" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">

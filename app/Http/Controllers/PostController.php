@@ -4,17 +4,34 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
+use App\Models\Tag;
+use App\Models\Category;
+use Illuminate\Support\Facades\Http;
+
 
 class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {   
-        $posts = Post::all();
-        return view('dashboard.pages.posts.index',compact('posts'));
+        // $posts = Post::all();
+        // return view('dashboard.pages.posts.index',compact('posts'));
+        
+        $allposts = Post::all();
+        $posts = Post::latest()->paginate(1);
+        if ($request->ajax()) {
+            return response()->json([
+                'rows' => view('dashboard.pages.posts.table_rows', compact('posts'))->render(),
+                'next_page' => $posts->nextPageUrl()
+            ]);
+        }
+
+        return view('dashboard.pages.posts.index', compact('posts','allposts'));
+
     }
 
     /**
@@ -22,7 +39,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('dashboard.pages.posts.create');
+        $categories = Category::all();
+        return view('dashboard.pages.posts.create',compact('categories'));
     }
 
     /**
@@ -30,26 +48,66 @@ class PostController extends Controller
      */
     public function store(PostRequest $request)
     {
-        
+
         $slug = \Str::slug($request->title);
+        $count = Post::where('slug', 'LIKE', "$slug%")->count();
+        if ($count > 0) {
+            $slug .= '-' . ($count + 1);
+        }
 
         if($request->hasFile('thumbnail')){
             
             $file = $request->file('thumbnail');
             $newFileName = time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads'), $newFileName);
+            $response = Http::withHeaders([
+                'X-APP-A-KEY' => env('APP_A_API_KEY'),
+                    ])
+                        ->attach(
+                            'thumbnail',
+                            file_get_contents($file->getRealPath()),
+                            $newFileName
+                        )->post(config('services.external_url.website_storage_link')."/api/upload_thumbnail");
             
         }
-        Post::create([
+
+        if ($response->failed()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Upload failed'
+                ], 500);
+        }
+
+        $data = $response->json();
+
+        $post = Post::create([
             'title' => $request->title,
             'slug' => $slug,
             'content' => $request->content,
-            'thumbnail' => $newFileName
+            'thumbnail' => $data['path'],
+            'youtube_link' => $request->youtube_link,
+            'category_id' => $request->category_id,
         ]);
-        
 
-        session()->flash('success', "Post created is successful");
-        return redirect()->route('posts.index');
+        //Attach tags
+        if ($request->tags) {
+        $tagNames = array_map('trim', explode(',', $request->tags));
+        $tagIds = [];
+
+            foreach ($tagNames as $tagName) {
+                $tagIds[] = Tag::firstOrCreate(['name' => strtolower($tagName)])->id;
+            }
+
+            $post->tags()->sync($tagIds);
+        }
+        
+        if($post){
+            session()->flash('success', "Post created is successful");
+            return redirect()->route('posts.index');
+        }else{
+            session()->flash('error', "Post Creation failed");
+            return redirect()->back();
+        } 
+        
 
     }
 
@@ -67,83 +125,134 @@ class PostController extends Controller
     public function edit(string $id)
     {
         $post = Post::find($id);
-        return view('dashboard.pages.posts.edit',compact('post'));
+        $categories = Category::all();
+        return view('dashboard.pages.posts.edit',compact('post','categories'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+
+    public function update(UpdatePostRequest $request, Post $post)
     {
-                // Find the post
-            $post = Post::findOrFail($id);
+        
+        // Generate slug if title changed
+        if ($request->title !== $post->title) {
+            $slug = \Str::slug($request->title);
+            $count = Post::where('slug', 'LIKE', "$slug%")
+                        ->where('id', '!=', $post->id)
+                        ->count();
+            if ($count > 0) {
+                $slug .= '-' . ($count + 1);
+            }
+        } else {
+            $slug = $post->slug;
+        }
 
-            // Validate input
-            $validated = $request->validate([
-                'title' => 'required|string|max:255',
-                'content' => 'required|string',
-                'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
-            ]);
+        $thumbnailPath = $post->thumbnail; // default to existing thumbnail
 
-            // Handle thumbnail upload
-            if ($request->hasFile('thumbnail')) {
-                $file = $request->file('thumbnail');
-                $newFileName = time() . '.' . $file->getClientOriginalExtension();
+        // Handle new thumbnail upload
+        if ($request->hasFile('thumbnail')) {
+            $file = $request->file('thumbnail');
+            $newFileName = time() . '.' . $file->getClientOriginalExtension();
 
-                // Define upload path
-                $uploadPath = public_path('uploads');
-
-                // Create folder if missing
-                if (!file_exists($uploadPath)) {
-                    mkdir($uploadPath, 0777, true);
+            // Delete old thumbnail if exists
+            if ($post->thumbnail) {
+                try {
+                    
+                    Http::withHeaders([
+                        'X-APP-A-KEY' => env('APP_A_API_KEY')
+                    ])->post(config('services.external_url.website_storage_link')."/api/delete_thumbnail", [
+                        'path' => $post->thumbnail
+                    ]);
+                } catch (\Exception $e) {
+                    // Log error but continue
+                    \Log::error("Failed to delete old thumbnail: ".$e->getMessage());
                 }
-
-                // Delete old image if exists
-                if ($post->thumbnail && file_exists(public_path('uploads/' . $post->thumbnail))) {
-                    unlink(public_path('uploads/' . $post->thumbnail));
-                }
-
-                // Move new file
-                $file->move($uploadPath, $newFileName);
-
-                // Save new filename
-                $validated['thumbnail'] = $newFileName;
-            } else {
-                // Keep the old image if no new one is uploaded
-                $validated['thumbnail'] = $post->thumbnail;
             }
 
-            $post->update([
-                'title' => $validated['title'],
-                'content' => $validated['content'],
-                'thumbnail' => $validated['thumbnail'],
-            ]);
+            // Upload new thumbnail
+            $response = Http::withHeaders([
+                'X-APP-A-KEY' => env('APP_A_API_KEY'),
+            ])->attach(
+                'thumbnail',
+                file_get_contents($file->getRealPath()),
+                $newFileName
+            )->post(config('services.external_url.website_storage_link')."/api/upload_thumbnail");
 
-            // Redirect with success
-            return redirect()
-                ->route('posts.index')
-                ->with('success', 'Post updated successfully!');
+            if ($response->failed()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Upload failed'
+                ], 500);
+            }
+
+            $data = $response->json();
+            $thumbnailPath = $data['path'];
+        }
+
+        // Update post
+        $post->update([
+            'title' => $request->title,
+            'slug' => $slug,
+            'content' => $request->content,
+            'thumbnail' => $thumbnailPath,
+            'youtube_link' => $request->youtube_link,
+            'category_id' => $request->category_id,
+        ]);
+
+        // Update tags
+        if ($request->tags) {
+            $tagNames = array_map('trim', explode(',', $request->tags));
+            $tagIds = [];
+            foreach ($tagNames as $tagName) {
+                $tagIds[] = Tag::firstOrCreate(['name' => strtolower($tagName)])->id;
+            }
+            $post->tags()->sync($tagIds);
+        } else {
+            $post->tags()->sync([]);
+        }
+
+        session()->flash('success', "Post updated successfully");
+        return redirect()->route('posts.index');
     }
+
+
+
+    
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
+        public function destroy(string $id){
         // Find the post
         $post = Post::findOrFail($id);
 
-        // Delete the thumbnail file if it exists
-        if ($post->thumbnail && file_exists(public_path('uploads/' . $post->thumbnail))) {
-            unlink(public_path('uploads/' . $post->thumbnail));
-        }
+        // Detach related tags (pivot delete)
+        $post->tags()->detach();
 
-        // Delete the post record
+        // Delete old thumbnail if exists
+         if ($post->thumbnail) {
+                try {
+                    
+                    Http::withHeaders([
+                        'X-APP-A-KEY' => env('APP_A_API_KEY')
+                    ])->post(config('services.external_url.website_storage_link')."/api/delete_thumbnail", [
+                        'path' => $post->thumbnail
+                    ]);
+                } catch (\Exception $e) {
+                    // Log error but continue
+                    \Log::error("Failed to delete old thumbnail: ".$e->getMessage());
+                }
+            }
+
+        // Delete post record
         $post->delete();
 
-        // Redirect with success message
+        // Return response
         return redirect()
             ->route('posts.index')
             ->with('success', 'Post deleted successfully!');
-        }
+    }
+
 }
