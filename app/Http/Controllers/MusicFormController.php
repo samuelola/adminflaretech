@@ -605,7 +605,8 @@ class MusicFormController extends Controller
                 return [
                     'id' => $art->id,
                     'path' => $art->path,
-                    'url' => Storage::url($art->path),
+                    'url' => config('services.external_url.website_storage_link') . '/storage/' . $art->path ?? '',
+                    
                 ];
             });
 
@@ -627,7 +628,7 @@ class MusicFormController extends Controller
                     'for' => $track->stream_type,
                     'genre' => $track->genre,
                     'participants' => json_decode($track->participants, true) ?? [],
-                    'audio_url' => $track->audioFile ? Storage::url($track->audioFile->path) : null,
+                    'audio_url' => $track->audioFile ? config('services.external_url.website_storage_link') . '/storage/' . ltrim($track->audioFile->path, '/') : null,
                 ];
             });
 
@@ -1038,7 +1039,7 @@ class MusicFormController extends Controller
         'status' => 'ok',
         'message' => 'Release submitted for review!',
     ]);
-}
+  }
 
 
 protected function parseDurationString($duration)
@@ -1212,7 +1213,7 @@ public function deleteAudioTrack(Request $request)
         'ean' => $release->stereo_code,
         'status' => $release->status,
         'distributed' => $release->distributed,
-        'artwork' => $release->artworks->first() ? config('services.external_url.website2'). '/storage/' .$release->artworks->first()->path : null,
+        'artwork' => $release->artworks->first() ? config('services.external_url.website_storage_link'). '/storage/' .$release->artworks->first()->path : null,
         'outlets' => $release->outlets->map(function ($o) {
             return [
                 'outlet_id' => $o->outlet_id,
@@ -1229,8 +1230,8 @@ public function deleteAudioTrack(Request $request)
                 $audio = [
                     'id' => $track->audioFile->id,
                     'filename' => $track->audioFile->filename,
-                    'path' => config('services.external_url.website2'). '/storage/' .$audioPath,
-                    'url' => config('services.external_url.website2'). '/storage/' .$audioPath ,
+                    'path' => config('services.external_url.website_storage_link'). '/storage/' .$audioPath,
+                    'url' => config('services.external_url.website_storage_link'). '/storage/' .$audioPath ,
                     // mime column may or may not exist for audio files; include if present
                     //'mime' => $track->audioFile->mime ?? null,
                     //'size_bytes' => $audioExists ? Storage::disk('public')->size($audioPath) : null,
@@ -1313,8 +1314,8 @@ private function generateDDEXMetadata(MusicRelease $release)
             $resourceFile = $dom->createElement('ResourceFile');
 
             $resourceFile->appendChild($dom->createElement('FileName', $track->audioFile->filename));
-            $resourceFile->appendChild($dom->createElement('FilePath', config('services.external_url.website2'). '/storage/' .$audioPath));
-            $resourceFile->appendChild($dom->createElement('FileURL', config('services.external_url.website2'). '/storage/' .$audioPath));
+            $resourceFile->appendChild($dom->createElement('FilePath', config('services.external_url.website_storage_link'). '/storage/' .$audioPath));
+            $resourceFile->appendChild($dom->createElement('FileURL', config('services.external_url.website_storage_link'). '/storage/' .$audioPath));
             //$resourceFile->appendChild($dom->createElement('FileMimeType', $track->audioFile->mime ?? 'audio/mpeg'));
             //$resourceFile->appendChild($dom->createElement('FileSize', $exists ? Storage::disk('public')->size($audioPath) : 0));
             $resourceFile->appendChild($dom->createElement('Duration', gmdate("H:i:s", $track->audioFile->duration_ms / 1000 ?? $track->duration_ms / 1000)));
@@ -1400,8 +1401,8 @@ private function generateMetadataCSV(MusicRelease $release)
 
             if ($track->audioFile) {
                 $audioName = $track->audioFile->filename ?? '';
-                $audioPath = config('services.external_url.website2'). '/storage/' .$track->audioFile->path;
-                $audioUrl = config('services.external_url.website2'). '/storage/' .$track->audioFile->path;
+                $audioPath = config('services.external_url.website_storage_link'). '/storage/' .$track->audioFile->path;
+                $audioUrl = config('services.external_url.website_storage_link'). '/storage/' .$track->audioFile->path;
                 //$audioMime = $track->audioFile->mime ?? 'audio/mpeg';
                 //$audioSize = Storage::exists($audioPath)? Storage::size($audioPath): 0;
             }

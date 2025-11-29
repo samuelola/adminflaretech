@@ -22,7 +22,7 @@ class PostController extends Controller
         // return view('dashboard.pages.posts.index',compact('posts'));
         
         $allposts = Post::all();
-        $posts = Post::latest()->paginate(1);
+        $posts = Post::latest()->paginate(5);
         if ($request->ajax()) {
             return response()->json([
                 'rows' => view('dashboard.pages.posts.table_rows', compact('posts'))->render(),

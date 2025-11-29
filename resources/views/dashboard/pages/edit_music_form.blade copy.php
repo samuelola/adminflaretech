@@ -1427,6 +1427,7 @@ function attachDeleteAudioHandler() {
 attachDeleteAudioHandler();
 
 
+
 // === Handle "Check All" functionality ===
 $(document).on('change', '#checkAll', function() {
     const isChecked = $(this).is(':checked');
