@@ -16,6 +16,8 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\MusicFormController;
 use App\Http\Controllers\ReleaseController;
+use App\Http\Controllers\CacheController;
+use App\Http\Controllers\MessageController;
 
 
 
@@ -33,7 +35,7 @@ Route::middleware('check.user')->group(function () {
 });
 
 
-
+Route::get('/clear', [CacheController::class, 'clear'])->name('clear');
 
 Route::get('/share/{id}', [DashboardController::class, 'share'])->name('share_track');
 
@@ -73,6 +75,11 @@ Route::middleware('superadmincheck')->group(function () {
         Route::post('/update_profile','updateProfile')->name('update_profile');
         Route::post('/user_update_profile/{id}','userUpdateProfile')->name('update_user_profile');
 
+    });
+
+    Route::controller(MessageController::class)->group(function () {
+        Route::get('/messages','getMessage')->name('messages.create');
+        Route::post('/messages','store')->name('messages.store');
     });
 
     Route::controller(SubscriptionController::class)->group(function () {
@@ -183,6 +190,7 @@ Route::middleware('superadmincheck')->group(function () {
 
     Route::controller(ReleaseController::class)->group(function () {
         Route::get('/music_product','musicProduct')->name('music_product');
+        Route::get('/approved_music_product','approveMusicProduct')->name('approve_music_product');
         Route::get('/labels','musicLabels')->name('music_labels');
         Route::get('/artists','musicArtist')->name('music_artist');
         Route::get('/music_release','musicRelease')->name('music_release');

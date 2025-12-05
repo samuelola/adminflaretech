@@ -165,6 +165,16 @@
        
       </li>
 
+      <li>
+        <a href="{{route('messages.create')}}">
+        <iconify-icon icon="ant-design:message-outlined" width="16" height="16" class="menu-icon"></iconify-icon>
+           <span>Message</span> 
+        </a>
+       
+      </li>
+
+      
+
       
 
       <li class="dropdown">
@@ -194,9 +204,9 @@
               <li>
                 <a href="{{route('music_product')}}"><iconify-icon icon="bi:dash" width="16" height="16"></iconify-icon>Products</a>
               </li>
-              {{--<li>
-                <a href="{{route('allTracks')}}"><iconify-icon icon="bi:dash" width="16" height="16"></iconify-icon>Tracks</a>
-              </li>--}}
+              <li>
+                <a href="{{route('approve_music_product')}}"><iconify-icon icon="bi:dash" width="16" height="16"></iconify-icon>Approved Products</a>
+              </li>
               
             </ul>
        </li>  

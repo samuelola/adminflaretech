@@ -48,7 +48,7 @@ class PostController extends Controller
      */
     public function store(PostRequest $request)
     {
-
+        
         $slug = \Str::slug($request->title);
         $count = Post::where('slug', 'LIKE', "$slug%")->count();
         if ($count > 0) {

@@ -26,6 +26,20 @@ class ReleaseController extends Controller
         return view('dashboard.pages.music_product',compact('release_products'));
     }
 
+    public function approveMusicProduct(){
+        
+        $release_products = MusicRelease::with(['user','tracks','artworks'])
+        ->withCount('tracks')
+        ->where([
+            'status' => 'submitted',
+            'distributed' => 'yes'
+        ])
+        ->get();
+        return view('dashboard.pages.approved_music_product',compact('release_products'));
+    }
+
+    
+
     public function musicLabels(){
         return view('dashboard.pages.music_labels');
     }
