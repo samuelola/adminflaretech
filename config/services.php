@@ -42,7 +42,6 @@ return [
      
    ],
 
-<<<<<<< HEAD
    'paystack' => [
     'secret' => env('PAYSTACK_SECRET_KEY'),
     'url'    => env('PAYSTACK_PAYMENT_URL', 'https://api.paystack.co'),
@@ -53,6 +52,4 @@ return [
         'key' => env('YOUTUBE_API_KEY'),
     ],
 
-=======
->>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
 ];

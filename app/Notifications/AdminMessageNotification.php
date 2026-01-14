@@ -13,23 +13,15 @@ class AdminMessageNotification extends Notification implements ShouldBroadcast
 {
     use Queueable;
 
-<<<<<<< HEAD
     public $title;
-=======
->>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
     public $message;
 
     /**
      * Create a new notification instance.
      */
-<<<<<<< HEAD
     public function __construct($title, $message)
     {
         $this->title   = $title;
-=======
-    public function __construct($message)
-    {
->>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
         $this->message = $message;
     }
 
@@ -77,17 +69,10 @@ class AdminMessageNotification extends Notification implements ShouldBroadcast
     public function toArray(object $notifiable): array
     {
         return [
-<<<<<<< HEAD
             'title'   => $this->title,
             'message' => $this->message,
             'icon'    => 'bitcoin-icons:verify-outline',
             'time'    => now()->diffForHumans(),
-=======
-            'title'    => '🔔 Message Alert ',
-            'message'  => $this->getFormattedMessage(),
-            'icon'     => 'bitcoin-icons:verify-outline',
-            'time'     => now()->diffForHumans(),
->>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
         ];
     }
 

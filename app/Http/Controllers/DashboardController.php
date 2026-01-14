@@ -250,39 +250,22 @@ class DashboardController extends Controller
         Session::put('tokken',$decrypted);
 
        if ($decrypted) {
-<<<<<<< HEAD
         $response = Http::withToken($decrypted)->get('http://adminflaretech.test/api/user');
-=======
-        $response = Http::withToken($decrypted)->get('http://superadmin.test/api/user');
->>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
         $loggedUserInfo = $response->body();
         $rel = json_decode($loggedUserInfo);
         $user = User::where('id',$rel->user_details->id)->first();
         Auth::setUser($user);
-<<<<<<< HEAD
         return Redirect::to('http://adminflaretech.test/dashboard');
        }
 
         return Redirect::to('http://authflaretech.test');
-=======
-        return Redirect::to('http://superadmin.test/dashboard');
-       }
-
-        return Redirect::to('http://auth.test');
->>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
     }
     public function logout(Request $request) {
         $rri = Session::get('tokken');
         $decrypted = $rri;
-<<<<<<< HEAD
         $response = Http::withToken($decrypted)->post('http://adminflaretech.test/api/logout');
         if($response->successful() == true){
             return Redirect::to('http://authflaretech.test');
-=======
-        $response = Http::withToken($decrypted)->post('http://superadmin.test/api/logout');
-        if($response->successful() == true){
-            return Redirect::to('http://auth.test');
->>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
             $request->session()->forget('tokken');
         }
        

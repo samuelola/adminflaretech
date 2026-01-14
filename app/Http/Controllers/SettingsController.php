@@ -13,10 +13,7 @@ use App\Imports\UsersImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Http;
 use App\Models\ApiSetting;
-<<<<<<< HEAD
 use App\Models\Vat;
-=======
->>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
 
 
 class SettingsController extends Controller
@@ -27,7 +24,6 @@ class SettingsController extends Controller
         return view('dashboard.pages.settings.allsettings',compact('allapis'));
     }
 
-<<<<<<< HEAD
     public function Vat(Request $request){
         
         $allvats = Vat::all();
@@ -36,8 +32,6 @@ class SettingsController extends Controller
 
     
 
-=======
->>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
     public function createsettings(Request $request){
 
          try{
@@ -91,7 +85,6 @@ class SettingsController extends Controller
         }
 
     }
-<<<<<<< HEAD
 
     public function updateVat(Request $request)
     {
@@ -122,8 +115,6 @@ class SettingsController extends Controller
     }
 
     
-=======
->>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
     
     
     public function apiexchangerate(Request $request)

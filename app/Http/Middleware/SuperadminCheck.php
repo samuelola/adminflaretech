@@ -25,11 +25,7 @@ class SuperadminCheck
 
         $rri = Session::get('tokken');
         $decrypted = $rri;
-<<<<<<< HEAD
         $response = Http::withToken($decrypted)->get('http://adminflaretech.test/api/user');
-=======
-        $response = Http::withToken($decrypted)->get('http://superadmin.test/api/user');
->>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
         $loggedUserInfo = $response->body();
         if($response->successful() == true){
             $rel = json_decode($loggedUserInfo);
@@ -39,7 +35,6 @@ class SuperadminCheck
                 if (Auth::check()) {
                     return $next($request);
                 }
-<<<<<<< HEAD
                 return Redirect::to('http://authflaretech.test');
 
             }else{
@@ -48,16 +43,6 @@ class SuperadminCheck
         }
         
         return Redirect::to('https://authflaretech.test');
-=======
-                return Redirect::to('http://auth.test');
-
-            }else{
-                return Redirect::to('http://auth.test');
-            }
-        }
-        
-        return Redirect::to('http://auth.test');
->>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
 
     }
 }

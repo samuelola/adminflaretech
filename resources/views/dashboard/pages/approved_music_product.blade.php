@@ -85,16 +85,10 @@
                                         <a href="{{route('edit_music_form',$item->id)}}" class="btn btn-primary-600 text-white px-12 py-10 d-inline-flex align-items-center gap-2"> 
                                             View <iconify-icon icon="proicons:eye" width="16" height="16"></iconify-icon>
                                         </a>
-<<<<<<< HEAD
                                         <!-- <a href="#" class="approval btn btn-success-600 text-white px-12 py-10 d-inline-flex align-items-center gap-2" data-id ="{{$item->id}}"> 
                                             Approve <iconify-icon icon="streamline-freehand:voice-id-approved" width="24" height="24"></iconify-icon>
                                         </a> -->
                                         Approved
-=======
-                                        <a href="#" class="approval btn btn-success-600 text-white px-12 py-10 d-inline-flex align-items-center gap-2" data-id ="{{$item->id}}"> 
-                                            Approve <iconify-icon icon="streamline-freehand:voice-id-approved" width="24" height="24"></iconify-icon>
-                                        </a>
->>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
                                         
                                         
                                     </div>

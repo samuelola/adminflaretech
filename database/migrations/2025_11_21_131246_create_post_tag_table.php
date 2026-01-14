@@ -11,20 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-<<<<<<< HEAD
         if (!Schema::hasTable('post_tag')) {
-=======
->>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
         Schema::create('post_tag', function (Blueprint $table) {
             $table->id();
             $table->foreignId('post_id')->constrained()->onDelete('cascade');
             $table->foreignId('tag_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
-<<<<<<< HEAD
        }
-=======
->>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
     }
 
     /**
