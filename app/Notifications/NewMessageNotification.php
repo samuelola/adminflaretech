@@ -9,27 +9,17 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class AdminMessageNotification extends Notification implements ShouldBroadcast
+class NewMessageNotification extends Notification implements ShouldBroadcast
 {
     use Queueable;
 
-<<<<<<< HEAD
-    public $title;
-=======
->>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
     public $message;
 
     /**
      * Create a new notification instance.
      */
-<<<<<<< HEAD
-    public function __construct($title, $message)
-    {
-        $this->title   = $title;
-=======
     public function __construct($message)
     {
->>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
         $this->message = $message;
     }
 
@@ -54,12 +44,11 @@ class AdminMessageNotification extends Notification implements ShouldBroadcast
             ->line('Thank you for using our application!');
     }
 
-
-     public function toBroadcast($notifiable)
+    public function toBroadcast($notifiable)
     {
         return new BroadcastMessage([
-            'message'  => $this->getFormattedMessage(),
-            'user_id'  => $notifiable->id,
+            'message' => $this->message,
+            'user_id' => $notifiable->id,
         ]);
     }
 
@@ -68,6 +57,7 @@ class AdminMessageNotification extends Notification implements ShouldBroadcast
         return ['App.Models.User.' . $this->notifiable->id];
     }
 
+    
 
     /**
      * Get the array representation of the notification.
@@ -77,22 +67,11 @@ class AdminMessageNotification extends Notification implements ShouldBroadcast
     public function toArray(object $notifiable): array
     {
         return [
-<<<<<<< HEAD
-            'title'   => $this->title,
+            
+            'title'   => 'Message Alert',
             'message' => $this->message,
             'icon'    => 'bitcoin-icons:verify-outline',
             'time'    => now()->diffForHumans(),
-=======
-            'title'    => '🔔 Message Alert ',
-            'message'  => $this->getFormattedMessage(),
-            'icon'     => 'bitcoin-icons:verify-outline',
-            'time'     => now()->diffForHumans(),
->>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
         ];
-    }
-
-    private function getFormattedMessage()
-    {
-        return "<strong>{$this->message['sub']}</strong><br>{$this->message['msg']}";
     }
 }

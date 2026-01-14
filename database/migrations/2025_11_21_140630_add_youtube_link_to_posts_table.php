@@ -11,11 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
+<<<<<<< HEAD
         if (!Schema::hasTable('posts')) {
         Schema::table('posts', function (Blueprint $table) {
             $table->text('youtube_link')->nullable;
         });
         }
+=======
+        Schema::table('posts', function (Blueprint $table) {
+            $table->text('youtube_link')->nullable;
+        });
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
     }
 
     /**

@@ -77,6 +77,7 @@
                                 </span>  </p>
                     </div>
                 </div> -->
+<<<<<<< HEAD
 
                 <h6 style="margin-top:25px;">Products</h6>
                  <div class="col-md-12">
@@ -163,6 +164,9 @@
 
                 <h6 style="margin-top:25px;">Transactions</h6>
                 @if($payments->count())
+=======
+              
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
                <div class="col-md-12">
                     <div class="table-responsive" style="margin-top:20px">
                         <table class="table basic-border-table mb-0">
@@ -212,15 +216,19 @@
                         </table>
                         </div>
                </div>
+<<<<<<< HEAD
                 @else
                   <p class="text-center"> No Transactions</p>
                @endif
 
+=======
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
            </div> 
        </div>
     </div>
 
     
+<<<<<<< HEAD
 <!-- Split Sheet Modal -->
 <div class="modal fade" id="splitSheetModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
@@ -247,6 +255,8 @@
         </div>
     </div>
 </div>
+=======
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
 
 
 
@@ -336,6 +346,7 @@
 
 </script>
 
+<<<<<<< HEAD
 
 <script>
 $(document).ready(function () {
@@ -441,6 +452,8 @@ $(document).on('click', '#loadMoreProducts', function () {
 </script>
 
 
+=======
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
 @endsection
   
 

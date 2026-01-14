@@ -11,13 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
+<<<<<<< HEAD
         if (!Schema::hasTable('tags')) {
+=======
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
             $table->timestamps();
         });
+<<<<<<< HEAD
         }
+=======
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
     }
 
     /**

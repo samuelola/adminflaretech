@@ -25,10 +25,13 @@
                                 Outlets
                                 </button>
                             </li>
+<<<<<<< HEAD
                              <li class="nav-item" role="presentation">
                                         <button class="nav-link" id="step6-tab" data-bs-toggle="tab" data-bs-target="#step6" type="button" role="tab">
                                             Verification Details</button>
                             </li>
+=======
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
                             </ul>
 
                         <div class="card">
@@ -83,7 +86,11 @@
                                                     class="form-control" 
                                                     name="stereo_code" 
                                                     id="stereo_code" 
+<<<<<<< HEAD
                                                     value="" 
+=======
+                                                    value="{{ $release->stereo_code ?? '' }}" 
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
                                                     readonly>   
                                             </div>
                                                 <div class="col-md-6">
@@ -112,7 +119,11 @@
                                    <div class="tab-pane fade" id="step2">
                                      <form id="formStep2" enctype="multipart/form-data">
                                         <div class="mb-3">
+<<<<<<< HEAD
                                             <label>Upload Artwork</label>
+=======
+                                            <label class="mb-3">Upload Artwork</label>
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
                                             <input type="file" class="form-control" id="artwork" name="artwork" accept="image/*">
                                         </div>
 
@@ -203,11 +214,19 @@
                                                 <td>
                                                     <span
                                                     class="bg-danger-focus text-danger-main px-24 py-4 rounded-pill fw-medium text-sm">
+<<<<<<< HEAD
                                                     @if($release->distributed == 'yes')
                                                         {{ 'Distributed'}}
                                                     @elseif($release->distributed == 'no')
                                                         {{ 'Not Distributed' }}
                                                     @endif    
+=======
+                                                     @if($release->distributed == 'yes')
+                                                        {{ 'Distributed'}}
+                                                    @elseif($release->distributed == 'no')
+                                                        {{ 'Not Distributed' }}
+                                                    @endif  
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
                                                     </span>
                                                 </td>
                                                 </tr>
@@ -217,6 +236,7 @@
 
                                         <span class="mt-3" id="outletsSaveStatus"></span>
 
+<<<<<<< HEAD
                                        
                                         </form>
                                          <div class="mt-3 d-flex align-items-center gap-2">
@@ -334,3 +354,19 @@
     </div>
   </div>
 </div>
+=======
+                                        <div class="mt-3 d-flex align-items-center gap-2">
+                                            <button type="button" class="btn btn-primary-600" id="saveOutletsBtn">Save Outlets</button>
+                                            <button type="button" class="btn btn-success" id="updateReleaseBtn">
+                                            <i class="bi bi-check-circle"></i> Submit Release
+                                            </button>
+                                            <span id="submitStatus"></span>
+                                            <button type="button" class="btn btn-outline-secondary ms-auto" id="backToStep4">← Back</button>
+                                        </div>
+                                        </form>
+                                    </div> <!--end of tab plain -->
+
+                                  </div><!-- end of tab content -->
+                              </div><!-- end of card body -->
+                          </div><!-- end of card -->
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f

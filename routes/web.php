@@ -21,7 +21,10 @@ use App\Http\Controllers\MessageController;
 
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
 Route::get('/ping', function () {
     return response()->json(['status' => 'ok']);
 });
@@ -77,7 +80,11 @@ Route::middleware('superadmincheck')->group(function () {
         Route::post('/user_update_profile/{id}','userUpdateProfile')->name('update_user_profile');
 
     });
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
     Route::controller(MessageController::class)->group(function () {
         Route::get('/messages','getMessage')->name('messages.create');
         Route::post('/messages','store')->name('messages.store');
@@ -140,22 +147,31 @@ Route::middleware('superadmincheck')->group(function () {
          Route::post('/createsettings','createsettings')->name('createsettings');
          Route::post('/updatesettings','updatesettings')->name('updatesettings');
          Route::post('/apiexchangerate','apiexchangerate')->name('apiexchangerate');
+<<<<<<< HEAD
          Route::get('/vatsettings','Vat')->name('vat');
          Route::post('/updatevat','updateVat')->name('updatevat');
+=======
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
     });
     
     Route::controller(PaymentController::class)->group(function () {
          Route::get('/payment','Payments')->name('payment');
          Route::get('/earnings','Earnings')->name('earnings');
          Route::get('/split_sheet','splitSheet')->name('split_sheet');
+<<<<<<< HEAD
          Route::get('/split-sheet/{release}','getTracks')
          ->name('split.sheet.tracks');
+=======
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
     });
     
     
     Route::controller(TransactionController::class)->group(function () {
         Route::get('/transactions','transactions')->name('transactions');
+<<<<<<< HEAD
         Route::post('/resolve_account','resolveAccount')->name('resolve_account');
+=======
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
     });
     
     Route::resource('posts', PostController::class);
@@ -165,9 +181,12 @@ Route::middleware('superadmincheck')->group(function () {
     });
 
      Route::controller(MusicFormController::class)->group(function () {
+<<<<<<< HEAD
 
         // Youtube validation
         Route::post('/release_youtube_valid','youtubeValidation')->name('releases.youtube');
+=======
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
             
         Route::get('/releases/create','showStep')->name('releases.create');
         // Ajax endpoints

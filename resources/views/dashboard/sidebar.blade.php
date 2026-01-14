@@ -164,8 +164,12 @@
         </a>
        
       </li>
+<<<<<<< HEAD
       
       
+=======
+
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
       <li>
         <a href="{{route('messages.create')}}">
         <iconify-icon icon="ant-design:message-outlined" width="16" height="16" class="menu-icon"></iconify-icon>
@@ -176,6 +180,11 @@
 
       
 
+<<<<<<< HEAD
+=======
+      
+
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
       <li class="dropdown">
         <a href="javascript:void(0)">
         <iconify-icon icon="arcticons:canada-post" width="16" height="16" class="menu-icon"></iconify-icon>
@@ -207,7 +216,10 @@
                 <a href="{{route('approve_music_product')}}"><iconify-icon icon="bi:dash" width="16" height="16"></iconify-icon>Approved Products</a>
               </li>
               
+<<<<<<< HEAD
               
+=======
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
             </ul>
        </li>  
 
@@ -248,11 +260,14 @@
               <iconify-icon icon="bi:dash" width="16" height="16" class="menu-icon"></iconify-icon>
               API</a>
           </li>
+<<<<<<< HEAD
           <li>
             <a href="{{route('vat')}}">
               <iconify-icon icon="bi:dash" width="16" height="16" class="menu-icon"></iconify-icon>
               Vat Settings</a>
           </li>
+=======
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
         </ul>
       </li>
 

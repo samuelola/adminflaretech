@@ -25,7 +25,11 @@ class ReleaseController extends Controller
         ->get();
         return view('dashboard.pages.music_product',compact('release_products'));
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
     public function approveMusicProduct(){
         
         $release_products = MusicRelease::with(['user','tracks','artworks'])
@@ -38,6 +42,11 @@ class ReleaseController extends Controller
         return view('dashboard.pages.approved_music_product',compact('release_products'));
     }
 
+<<<<<<< HEAD
+=======
+    
+
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
     public function musicLabels(){
         return view('dashboard.pages.music_labels');
     }

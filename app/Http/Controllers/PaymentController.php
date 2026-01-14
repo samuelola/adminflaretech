@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Payment;
+<<<<<<< HEAD
 use App\Models\MusicRelease;
 
 class PaymentController extends Controller
@@ -31,6 +32,16 @@ class PaymentController extends Controller
         compact('payments', 'release_products', 'product_count')
     );
 }
+=======
+
+class PaymentController extends Controller
+{
+    public function Payments(Request $request)
+    {
+         $payments = Payment::get();
+         return view('dashboard.pages.payments.payment',compact('payments'));
+    }
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
 
     public function Earnings(Request $request)
     {
@@ -41,6 +52,7 @@ class PaymentController extends Controller
     {
         return view('dashboard.pages.payments.split_sheet');
     }
+<<<<<<< HEAD
 
     public function getTracks($releaseId)
     {
@@ -51,4 +63,6 @@ class PaymentController extends Controller
 
         return response()->json($release->tracks);
     }
+=======
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
 }

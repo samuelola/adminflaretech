@@ -27,9 +27,12 @@ class MusicRelease extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+<<<<<<< HEAD
 
     public function verification()
     {
         return $this->hasOne(Verification::class,'music_release_id');
     }
+=======
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
 }

@@ -172,12 +172,21 @@
                             <div class="row">
                                 <div class="col-md-6">
                                   <label class="form-label">Api Name</label>
+<<<<<<< HEAD
                                   <input type="text" name="name" id="editapi_name" class="form-control" placeholder="Enter Api Name" value="{{ old('api_name') }}">
                                 </div>
                                 <div class="col-md-6">
                                      <label class="form-label">Api Key</label>
                                      <input type="text" name="api_key" id="editapi_key" class="form-control" placeholder="Enter Key">
                                      <input type="hidden" name="id" id="editapi_id" class="form-control" placeholder="Enter Key">
+=======
+                                  <input type="text" name="name" id="editapi_name" class="form-control" placeholder="Enter Api Name" value="{{ old('name') }}">
+                                </div>
+                                <div class="col-md-6">
+                                     <label class="form-label">Api Key</label>
+                                     <input type="text" name="api_key" id="editapi_key" class="form-control" placeholder="Enter Key" value="{{ old('name') }}">
+                                     <input type="hidden" name="id" id="editapi_id" class="form-control" placeholder="Enter Key" value="{{ old('name') }}">
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
                                 </div>
                             </div>
                             

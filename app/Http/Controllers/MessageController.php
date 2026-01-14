@@ -32,12 +32,16 @@ class MessageController extends Controller
         ];
         // Send notification
         $user = User::find($request->receiver_id);
+<<<<<<< HEAD
         $user->notify(
                 new AdminMessageNotification(
                     'Message From Admin',
                     $msg
                 )
             );
+=======
+        $user->notify(new AdminMessageNotification($msg));
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
 
        
         session()->flash('success', "Message Sent");

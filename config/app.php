@@ -122,8 +122,11 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+<<<<<<< HEAD
     
     
+=======
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
 
 
     

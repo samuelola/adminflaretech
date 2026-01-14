@@ -565,8 +565,11 @@ class MusicFormController extends Controller
           $subscription_limit = DB::table('subscription_limit')->select('the_number')->get();
           $musical_roles = DB::table('musical_roles')->select('name')->get();
           $stores = DB::table('music_stores')->select('id','name','release_date')->get();
+<<<<<<< HEAD
           $getBanks = DB::table('banks')->get();
           $rels = json_decode($getBanks); 
+=======
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
         
         return view('dashboard.pages.edit_music_form', compact(
             'release', 
@@ -576,8 +579,12 @@ class MusicFormController extends Controller
             'languages',
             'subscription_limit',
             'musical_roles',
+<<<<<<< HEAD
             'getBanks',
             'rels'
+=======
+            
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
         ));
     }
 
@@ -601,6 +608,7 @@ class MusicFormController extends Controller
                 'stereo_code' => $release->stereo_code,
                 'label_name' => $release->label_name,
                 'release_date' => $release->release_date,
+<<<<<<< HEAD
                 // === Verification ===
         'verification' => $release->verification
             ? [
@@ -627,6 +635,8 @@ class MusicFormController extends Controller
                 'video_link' => null,
             ],
 
+=======
+>>>>>>> b27e3ab4af188d781835f7d5dfe90a47a625a22f
             ];
 
             /* --------------------------- Artwork section --------------------------- */
