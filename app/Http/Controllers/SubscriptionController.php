@@ -138,4 +138,63 @@ class SubscriptionController extends Controller
     {
         
     }
+
+    public function subscriptionUserCancel(Request $request){
+
+        $query = DB::table('sub_count')
+        ->join('subscription_plan', 'sub_count.subscription_id', '=', 'subscription_plan.id')
+        ->join('users', 'users.id', '=', 'sub_count.user_id')
+        ->select(
+            'sub_count.id as sub_count_id',
+            'sub_count.status',
+            'sub_count.start_date',
+            'sub_count.expires_at',
+            'subscription_plan.subscription_name',
+            'subscription_plan.is_cancellation_enable',
+            'users.first_name',
+            'users.last_name',
+            'users.email',
+        );
+
+
+    //    if ($request->filled('user_id')) {
+    //     $query->where('users.id', $request->user_id);
+    //    }
+
+       if ($request->filled('email')) {
+        $query->where('users.email', 'LIKE', '%' . $request->email . '%');
+       }
+
+       if ($request->filled('status')) {
+        $query->where('sub_count.status', $request->status);
+       }
+
+       $subscriptions = $query->orderBy('sub_count.id', 'desc')->paginate(20);
+
+        return view('dashboard.pages.users_sub', compact('subscriptions'));
+    }
+
+    public function updateSubscriptionUserCancel($id)
+    {
+        $subscription = DB::table('sub_count')
+        ->where('id', $id)
+        ->where('status', 'active')
+        ->first();
+
+        if (!$subscription) {
+            return back()->with('error', 'Subscription not found or already cancelled.');
+        }
+
+        DB::table('sub_count')
+            ->where('id', $id)
+            ->update([
+                'status' => 'notactive',
+                'expires_at' => now(), // optional immediate end
+            ]);
+
+        return back()->with('success', 'Subscription cancelled successfully.');
+    }
+
+
+    
 }

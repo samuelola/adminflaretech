@@ -1200,11 +1200,25 @@ public function deleteAudioTrack(Request $request)
 }
 
 
+    
+    public function releasedisApproval(Request $request){
+
+        $item = MusicRelease::findOrFail($request->id);
+        $item->distributed = 'no';
+        $item->distributed_at = NOW();
+        $item->admin_status = 'disapproved';
+        $item->save();
+
+
+    }
+
+
     public function releaseApproval(Request $request){
 
         $item = MusicRelease::findOrFail($request->id);
         $item->distributed = 'yes';
         $item->distributed_at = NOW();
+        $item->admin_status = 'approved';
         $item->save();
 
         // Generate metadata file

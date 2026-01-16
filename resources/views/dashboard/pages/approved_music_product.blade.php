@@ -75,11 +75,13 @@
                                     <p class="card-text text-neutral-600">Format: {{$item->release_type ?? ''}}</p> 
                                     <p class="card-text text-neutral-600">Label Name: {{$item->label_name ?? ''}}</p>    
                                     <p class="card-text text-neutral-600">Status:
-                                       @if($item->distributed == 'yes')
-                                         Released
-                                       @elseif($item->distributed == 'no')  
-                                         Not Released
+                                      <b style="font-size: 14px;">
+                                       @if($item->distributed == 'yes' && $item->admin_status == 'approved')
+                                         Released & Approved by Admin
+                                       @elseif($item->distributed == 'no' && $item->admin_status == 'disapproved')  
+                                         Not Released & Disapproved by Admin
                                        @endif 
+                                       </b>
                                     </p> 
                                     <div class="d-flex flex-wrap align-items-center justify-content-left gap-4">
                                         <a href="{{route('edit_music_form',$item->id)}}" class="btn btn-primary-600 text-white px-12 py-10 d-inline-flex align-items-center gap-2"> 

@@ -85,11 +85,13 @@ Route::middleware('superadmincheck')->group(function () {
     Route::controller(SubscriptionController::class)->group(function () {
          
          Route::get('/subscription','subscription_form')->name('subscription');
+         Route::get('/cancel_user_subscription','subscriptionUserCancel')->name('cancel_user_subscription');
          Route::get('/all_subscription','allsubscription')->name('allsubscription');
          Route::get('/choosesubscription','choosesubscription')->name('choosesubscription');
          Route::post('/add_subscription','add_subscription')->name('add_subscription');
          Route::get('/edit_subscription/{id}','edit_subscription')->name('edit_subscription');
          Route::post('/editSub/{id}','editSub')->name('editSub');
+         Route::put('/subscription/cancel/{id}', 'updateSubscriptionUserCancel')->name('subscription.cancel');
     });
     
     Route::controller(PermissionController::class)->group(function () {
@@ -192,7 +194,7 @@ Route::middleware('superadmincheck')->group(function () {
         Route::post('/clear_audios','clearAllAudios')->name('music.clearAudios');
         Route::post('/delete_audio_track','deleteAudioTrack');
         Route::post('/release_approval','releaseApproval');
-        
+        Route::post('/release_disapproval','releasedisApproval');
     });
 
 

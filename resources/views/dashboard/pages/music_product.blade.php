@@ -75,12 +75,17 @@
                                     <p class="card-text text-neutral-600">Format: {{$item->release_type ?? ''}}</p> 
                                     <p class="card-text text-neutral-600">Label Name: {{$item->label_name ?? ''}}</p>    
                                     <p class="card-text text-neutral-600">Status:
-                                       @if($item->distributed == 'yes')
-                                         Released
-                                       @elseif($item->distributed == 'no')  
-                                         Not Released
+                                      <b style="font-size: 14px;">
+                                       @if($item->distributed == 'yes' && $item->admin_status == 'approved')
+                                         Released & Approved by Admin
+                                       @elseif($item->distributed == 'no' && $item->admin_status == 'disapproved')  
+                                         Not Released & Disapproved by Admin
+                                       @elseif($item->distributed == 'no' && $item->admin_status == 'NULL')  
+                                         Not Released & not approved by Admin  
                                        @endif 
+                                       </b>
                                     </p> 
+                                    
                                     <div class="d-flex flex-wrap align-items-center justify-content-left gap-4">
                                         <a href="{{route('edit_music_form',$item->id)}}" class="btn btn-primary-600 text-white px-12 py-10 d-inline-flex align-items-center gap-2"> 
                                             View <iconify-icon icon="proicons:eye" width="16" height="16"></iconify-icon>
@@ -88,7 +93,9 @@
                                         <a href="#" class="approval btn btn-success-600 text-white px-12 py-10 d-inline-flex align-items-center gap-2" data-id ="{{$item->id}}"> 
                                             Approve <iconify-icon icon="streamline-freehand:voice-id-approved" width="24" height="24"></iconify-icon>
                                         </a>
-                                        
+                                        <a href="#" class="disapproval btn btn-danger-600 text-white px-12 py-10 d-inline-flex align-items-center gap-2" data-id ="{{$item->id}}"> 
+                                            Disapprove <iconify-icon icon="material-symbols-light:cancel-outline" width="24" height="24"></iconify-icon>
+                                        </a>
                                         
                                     </div>
                                 </div>
@@ -126,6 +133,40 @@ $(document).ready(function () {
           },
           success: function(response) {
               alert('Release approved successfully!');
+              let redirectUrl = "{{ route('music_product') }}"; 
+              window.location.href = redirectUrl;
+              console.log(response);
+          },
+          error: function(xhr) {
+              alert('Something went wrong.');
+              console.error(xhr.responseText);
+          }
+      });
+   })
+   
+
+});
+
+</script>
+
+
+<script>
+$(document).ready(function () {
+
+   $('.disapproval').on('click',function(e){
+       e.preventDefault();
+       var releaseId = $(this).data('id');
+       if(!confirm('Are you sure you want to disapprove the release ?')) return;
+      
+        $.ajax({
+          url: '/release_disapproval',       
+          method: 'POST',
+          data: {
+              id: releaseId,
+              _token: '{{ csrf_token() }}' 
+          },
+          success: function(response) {
+              alert('Release disapproved successfully!');
               let redirectUrl = "{{ route('music_product') }}"; 
               window.location.href = redirectUrl;
               console.log(response);

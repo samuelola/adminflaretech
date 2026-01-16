@@ -9,6 +9,8 @@
   $permissionedituserPermission = App\Models\PermissionRole::getPermission('delete-users',Auth::user()->role_id);
   $permissiondeleteuserPermission = App\Models\PermissionRole::getPermission('edit-users',Auth::user()->role_id);
   $permissionchooseSubscriptionPermission = App\Models\PermissionRole::getPermission('choose_subscription',Auth::user()->role_id);
+  $permissionCancelSubPermission = App\Models\PermissionRole::getPermission('cancel_subscription',Auth::user()->role_id);
+  
   @endphp
   <button type="button" class="sidebar-close-btn">
     <iconify-icon icon="radix-icons:cross-2"></iconify-icon>
@@ -89,6 +91,12 @@
           </li>
           @endif  
 
+          @if(!empty($permissionCancelSubPermission))
+          <li>
+            <a href="{{route('cancel_user_subscription')}}"><iconify-icon icon="bi:dash" width="16" height="16"></iconify-icon>Users Subscription List</a>
+          </li>
+          @endif  
+
           @if(!empty($permissionaddallsub))
           <li>
           
@@ -149,6 +157,9 @@
           <li>
             <a href="{{route('assign_permission_role')}}"><iconify-icon icon="bi:dash" width="16" height="16"></iconify-icon>Assign Permission Role</a>
           </li>
+          
+
+          
           
         </ul>
       </li>

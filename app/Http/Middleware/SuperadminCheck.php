@@ -38,11 +38,11 @@ class SuperadminCheck
                 return Redirect::to('http://authflaretech.test');
 
             }else{
-                return Redirect::to('https://authflaretech.test');
+                return Redirect::to('http://authflaretech.test');
             }
         }
         
-        return Redirect::to('https://authflaretech.test');
+        return Redirect::to('http://authflaretech.test');
 
     }
 }
