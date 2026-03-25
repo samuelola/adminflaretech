@@ -222,7 +222,13 @@
             </ul>
        </li>  
 
-      
+      <li>
+        <a href="{{route('all-flaretech-monetize-songs')}}">
+        <iconify-icon icon="pixel:analytics" width="16" height="16" class="menu-icon"></iconify-icon>
+           <span>All Monetize Songs</span> 
+        </a>
+       
+      </li>
 
       <li class="dropdown">
         <a href="javascript:void(0)" class="menu-icon">

@@ -18,6 +18,7 @@ use App\Http\Controllers\MusicFormController;
 use App\Http\Controllers\ReleaseController;
 use App\Http\Controllers\CacheController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\ArtistOwnershipIdentityController;
 
 
 
@@ -210,6 +211,14 @@ Route::middleware('superadmincheck')->group(function () {
         Route::get('/last_release','getLastRelease')->name('last_release');
         Route::get('/edit_music_product/{id}','editMusicProduct')->name('edit_music_product');
         Route::post('/update_music','updateMusicRelease')->name('update_music_release');
+    });
+
+
+    Route::controller(ArtistOwnershipIdentityController::class)->group(function () {
+
+           Route::get('all-monetize-songs', 'songUpload')->name('all-flaretech-monetize-songs');
+           Route::get('artist-song/{id}', 'artistSong')->name('artist-song');
+           
     });
 
     
