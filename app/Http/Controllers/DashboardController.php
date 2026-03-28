@@ -265,8 +265,10 @@ class DashboardController extends Controller
         $decrypted = $rri;
         $response = Http::withToken($decrypted)->post('http://adminflaretech.test/api/logout');
         if($response->successful() == true){
+            $request->session()->flush();
+            $request->session()->regenerateToken();
             return Redirect::to('http://authflaretech.test');
-            $request->session()->forget('tokken');
+            // $request->session()->forget('tokken');
         }
        
         

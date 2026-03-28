@@ -15,24 +15,34 @@ use App\Models\RightsConfirmation;
 use App\Models\SongContributor;
 use Illuminate\Support\Facades\Crypt;
 use DB;
+use App\Services\DSPSubmissionService;
 
 
 class ArtistOwnershipIdentityController extends Controller
 {
+
+    protected $dspService;
+
+    public function __construct(DSPSubmissionService $dspService)
+    {
+        $this->dspService = $dspService;
+    }
     
      public function songUpload(){
-         
-         $get_uploadsongs = ArtistOwnerIdentity::with(['user'])
-                                         ->orderBy('id','desc')
-                                         ->get();                                
+        
+         $user = auth()->user();
+         $get_uploadsongs = ArtistOwnerIdentity::where('user_id','!=',$user->id)
+            ->where('catalog_status', 'submitted')
+            ->latest()
+            ->get();                                                                 
          return view('dashboard.pages.catalog_ownership.index',compact('get_uploadsongs'));
      }
 
      public function artistSong($id){
-
-        $userid = decrypt($id);
-        $artist = ArtistOwnerIdentity::where('user_id', $userid)->first();
-        $user = User::where('id',$userid)->first();
+        
+        $catalog_id = decrypt($id);
+        $artist = ArtistOwnerIdentity::where('id', $catalog_id)->first();
+        $user = User::where('id',$artist->user_id)->first();
         $all_countries = DB::table('countries')->get();
         $user_country = Country::where('iso2', $user->country)->first();
         $banks = DB::table('banks')->get();
@@ -54,6 +64,17 @@ class ArtistOwnershipIdentityController extends Controller
             'payment','submission'
         ));
           
+     }
+
+     public function createMetadata($id){
+
+       $catalog_id = decrypt($id);
+       $artist = ArtistOwnerIdentity::where('id', $catalog_id)->first();
+       
+       $result = $this->dspService->processSubmission($artist->id);
+       return back()->with('success', 'Metadata Created Successfuly');
+
+         
      }
     
     

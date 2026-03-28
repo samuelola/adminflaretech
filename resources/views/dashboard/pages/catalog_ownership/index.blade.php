@@ -75,6 +75,7 @@
                     <th scope="col">ID Upload</th>
                     <th scope="col">Created Date</th>
                     <th scope="col">View Song</th>
+                    <th scope="col">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -112,7 +113,17 @@
                                 <td>
                                     {{\Carbon\Carbon::parse($value->created_at)->format('d-m-Y')}}
                                 </td>
-                                <td><a href="{{route('artist-song',encrypt($value->user_id))}}" class="btn btn-primary-600">Songs</a</td>
+                                <td><a href="{{route('artist-song',encrypt($value->id))}}" class="btn btn-primary-600">Songs</a></td>
+                                <td>
+                                    <form method="post" action="{{route('create_metadata',encrypt($value->id))}}"> 
+                                      @csrf
+                                        <button type="submit" class="btn btn-primary-600">
+                                            Create Metadata
+                                        </button>
+                                    </form>
+                                    
+                                    
+                                </td>
                             </tr>
                         @endforeach
 

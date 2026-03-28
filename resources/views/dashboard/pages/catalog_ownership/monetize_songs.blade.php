@@ -1573,7 +1573,7 @@ $('#finalSubmitForm').on('submit', function(e){
        .html('<span class="spinner-border spinner-border-sm"></span> Submitting...');
 
     $.ajax({
-        url: "{{ route('artist.final.submit') }}",
+        url: "#",
         type: "POST",
         data: {
             digital_name: $('#digitalName').val(),

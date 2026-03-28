@@ -218,6 +218,7 @@ Route::middleware('superadmincheck')->group(function () {
 
            Route::get('all-monetize-songs', 'songUpload')->name('all-flaretech-monetize-songs');
            Route::get('artist-song/{id}', 'artistSong')->name('artist-song');
+           Route::post('/admin/create-metadata/{id}', 'createMetadata')->name("create_metadata");
            
     });
 
