@@ -29,5 +29,11 @@ class ArtistOwnerIdentity extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function submission()
+    {
+        return $this->hasOne(ArtistCatalogOwnershipSubmit::class, 'artist_ownership_identity_id');
+    }
+    
+
     
 }

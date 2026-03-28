@@ -31,7 +31,7 @@ class ArtistOwnershipIdentityController extends Controller
      public function songUpload(){
         
          $user = auth()->user();
-         $get_uploadsongs = ArtistOwnerIdentity::where('user_id','!=',$user->id)
+         $get_uploadsongs = ArtistOwnerIdentity::with(['submission'])->where('user_id','!=',$user->id)
             ->where('catalog_status', 'submitted')
             ->latest()
             ->get();                                                                 
@@ -67,15 +67,57 @@ class ArtistOwnershipIdentityController extends Controller
      }
 
      public function createMetadata($id){
-
-       $catalog_id = decrypt($id);
-       $artist = ArtistOwnerIdentity::where('id', $catalog_id)->first();
        
-       $result = $this->dspService->processSubmission($artist->id);
-       return back()->with('success', 'Metadata Created Successfuly');
-
-         
+       try{
+            $catalog_id = decrypt($id);
+            $artist = ArtistOwnerIdentity::where('id', $catalog_id)->first();
+            $result = $this->dspService->processSubmission($artist->id);
+            return back()->with('success', 'Metadata Created Successfuly');
+       }catch(\Exception $e){
+           return back()->with('error', $e->getMessage());
+       }
+       
      }
+
+     public function approve($id)
+    {
+
+        $catalog_id = decrypt($id);
+        $artist = ArtistOwnerIdentity::where('id', $catalog_id)->first();
+        $submission = ArtistCatalogOwnershipSubmit::where([
+            'artist_ownership_identity_id' => $artist->id,
+        ])->first();
+        
+        if ($submission->status === 'approved') {
+            return back()->with('error', 'Already approved');
+        }
+
+        $submission->status = 'approved';
+        $submission->approved_at = now();
+        $submission->save();
+
+        return back()->with('success', 'Submission approved');
+    }
+
+    public function reject($id)
+    {
+
+        $catalog_id = decrypt($id);
+        $artist = ArtistOwnerIdentity::where('id', $catalog_id)->first();
+        $submission = ArtistCatalogOwnershipSubmit::where([
+            'artist_ownership_identity_id' => $artist->id,
+        ])->first();
+        
+        if ($submission->status === 'approved') {
+            return back()->with('error', 'Already approved');
+        }
+
+        $submission->status = 'rejected';
+        $submission->rejected_at = now();
+        $submission->save();
+
+        return back()->with('success', 'Submission rejected');
+    }
     
     
 }

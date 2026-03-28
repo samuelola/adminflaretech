@@ -38,6 +38,18 @@
 
         <div class="row">
                 <div class="col-md-12">
+                        @if(session('success'))
+                            
+                            <div class="alert alert-success bg-success-100 text-success-600 border-danger-100 px-24 py-11 mb-0 fw-semibold text-lg radius-8 d-flex align-items-center justify-content-between" role="alert">
+                                    <div class="d-flex align-items-center gap-2">
+                                        
+                                        {!! session('success') !!} 
+                                    </div>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
+                </div>
+                <div class="col-md-12">
                         @if(session('error'))
                             
                             <div class="alert alert-danger bg-danger-100 text-danger-600 border-danger-100 px-24 py-11 mb-0 fw-semibold text-lg radius-8 d-flex align-items-center justify-content-between" role="alert">
@@ -71,6 +83,7 @@
                     <th scope="col">Country</th>
                     <th scope="col">Phone Number</th>
                     <th scope="col">Email</th>
+                    <th scope="col">Status</td>
                     <th scope="col">ID Type</th>
                     <th scope="col">ID Upload</th>
                     <th scope="col">Created Date</th>
@@ -91,6 +104,15 @@
                                 <td>{{$value->country}}</td>
                                 <td>{{$value->phone}}</td>
                                 <td>{{$value->email}}</td>
+                                <td>
+                                @if($value->submission->status == 'pending')
+                                    <span class="badge bg-warning">Pending</span>
+                                @elseif($value->submission->status == 'approved')
+                                    <span class="badge bg-success">Approved</span>
+                                @elseif($value->submission->status == 'rejected')
+                                    <span class="badge bg-danger">Rejected</span>
+                                @endif
+                                </td>
                                 <td>{{$value->id_type}}</td>            
                                 <td>
                                     
@@ -113,16 +135,33 @@
                                 <td>
                                     {{\Carbon\Carbon::parse($value->created_at)->format('d-m-Y')}}
                                 </td>
-                                <td><a href="{{route('artist-song',encrypt($value->id))}}" class="btn btn-primary-600">Songs</a></td>
+                                <td><a href="{{route('artist-song',encrypt($value->id))}}" class="btn btn-sm btn-primary-600">Songs</a></td>
                                 <td>
-                                    <form method="post" action="{{route('create_metadata',encrypt($value->id))}}"> 
+                                    <form method="post" action="{{route('create_metadata',encrypt($value->id)) }}"> 
                                       @csrf
-                                        <button type="submit" class="btn btn-primary-600">
+                                        <button type="submit" class="btn btn-sm btn-primary-600">
                                             Create Metadata
                                         </button>
                                     </form>
-                                    
-                                    
+
+                                </td>
+                                <td>
+                                  @if($value->submission->status == 'pending')
+
+                                    <!-- APPROVE -->
+                                    <form method="POST" action="{{ route('submission.approve', encrypt($value->id)) }}" style="display:inline;">
+                                        @csrf
+                                        <button class="btn btn-success btn-sm">Approve</button>
+                                    </form>
+
+                                    <!-- REJECT -->
+                                    <form method="POST" action="{{ route('submission.reject', encrypt($value->id)) }}" style="display:inline;">
+                                        @csrf
+                                        
+                                        <button class="btn btn-danger btn-sm">Reject</button>
+                                    </form>
+
+                                @endif
                                 </td>
                             </tr>
                         @endforeach
