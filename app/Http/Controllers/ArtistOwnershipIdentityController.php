@@ -16,6 +16,7 @@ use App\Models\SongContributor;
 use Illuminate\Support\Facades\Crypt;
 use DB;
 use App\Services\DSPSubmissionService;
+use App\Notifications\NewMessageNotification;
 
 
 class ArtistOwnershipIdentityController extends Controller
@@ -83,7 +84,7 @@ class ArtistOwnershipIdentityController extends Controller
     {
 
         $catalog_id = decrypt($id);
-        $artist = ArtistOwnerIdentity::where('id', $catalog_id)->first();
+        $artist = ArtistOwnerIdentity::with(['user'])->where('id', $catalog_id)->first();
         $submission = ArtistCatalogOwnershipSubmit::where([
             'artist_ownership_identity_id' => $artist->id,
         ])->first();
@@ -96,6 +97,15 @@ class ArtistOwnershipIdentityController extends Controller
         $submission->approved_at = now();
         $submission->save();
 
+        $recipient = $artist->user;
+
+        $recipient->notify(
+            new NewMessageNotification(
+                'Catalog Submission verification status ',
+                "Congratulations your Catalog Submission & Ownership Verification with code : {$artist->artist_code} has been approved"
+            )
+        );
+
         return back()->with('success', 'Submission approved');
     }
 
@@ -103,7 +113,7 @@ class ArtistOwnershipIdentityController extends Controller
     {
 
         $catalog_id = decrypt($id);
-        $artist = ArtistOwnerIdentity::where('id', $catalog_id)->first();
+        $artist = ArtistOwnerIdentity::with(['user'])->where('id', $catalog_id)->first();
         $submission = ArtistCatalogOwnershipSubmit::where([
             'artist_ownership_identity_id' => $artist->id,
         ])->first();
@@ -115,6 +125,15 @@ class ArtistOwnershipIdentityController extends Controller
         $submission->status = 'rejected';
         $submission->rejected_at = now();
         $submission->save();
+
+        $recipient = $artist->user;
+
+        $recipient->notify(
+            new NewMessageNotification(
+                'Catalog Submission verification status ',
+                "Your Catalog Submission & Ownership Verification with code : {$artist->artist_code}  has been disapproved"
+            )
+        );
 
         return back()->with('success', 'Submission rejected');
     }

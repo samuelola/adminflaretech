@@ -88,6 +88,7 @@
                     <th scope="col">ID Upload</th>
                     <th scope="col">Created Date</th>
                     <th scope="col">View Song</th>
+                    <th scope="col">Metadata</th>
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
