@@ -62,9 +62,9 @@
                             <div class="card h-100 radius-12">
                                  @php
                                     $artworkPath = $item->artworks->first()->path ?? 'default.jpg';
-                                    $storageUrl = rtrim(config('services.external_url.website_storage_link'), '/');
+                                    $storageUrl = env('R2_PUBLIC_URL');
                                 @endphp
-                                <img src="{{ $storageUrl . '/storage/' . ltrim($artworkPath, '/') }}" class="card-img-top" alt="" style="height:300px;">
+                                <img src="{{ $storageUrl . '/' . ltrim($artworkPath, '/') }}" class="card-img-top" alt="" style="height:300px;">
                                 <div class="card-body p-16 text-left">
                                     <h5 class="card-title text-lg text-primary-light
                                     mb-6">{{$item->title}}</h5>
